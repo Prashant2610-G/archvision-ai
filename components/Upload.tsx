@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useOutletContext} from "react-router";
 import {CheckCircle2, ImageIcon, UploadIcon} from "lucide-react";
 import {PROGRESS_INTERVAL_MS, PROGRESS_STEP, REDIRECT_DELAY_MS} from "../lib/constants";
@@ -11,24 +11,59 @@ const Upload = ({ onComplete }: UploadProps) => {
     const [file, setFile] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [error, setError] = useState<string | null>(null);
+
+    const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const redirectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const {isSignedIn} = useOutletContext<AuthContext>();
+
+    useEffect(() => {
+        return () => {
+            if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+            if (redirectTimeoutRef.current) clearTimeout(redirectTimeoutRef.current);
+        };
+    }, []);
+
+    const isValidImageFile = (file: File) => {
+        const acceptedExtensions = ['.jpg', '.jpeg', '.png'];
+        const fileName = file.name.toLowerCase();
+        const hasValidExtension = acceptedExtensions.some(ext => fileName.endsWith(ext));
+        return file.type.startsWith('image/') && hasValidExtension;
+    };
 
     const processFile = useCallback((file: File) => {
         if (!isSignedIn) return;
 
+        if (!isValidImageFile(file)) {
+            setError('Please upload a valid image file (.jpg, .jpeg, or .png)');
+            return;
+        }
+
         setFile(file);
         setProgress(0);
+        setError(null);
 
         const reader = new FileReader();
+        reader.onerror = () => {
+            setFile(null);
+            // Optionally show error message to user
+            console.error('Failed to read file');
+        };
         reader.onload = (e) => {
             const base64Data = e.target?.result as string;
 
-            const interval = setInterval(() => {
+            if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+
+            progressIntervalRef.current = setInterval(() => {
                 setProgress((prev) => {
                     if (prev >= 100) {
-                        clearInterval(interval);
-                        setTimeout(() => {
+                        if (progressIntervalRef.current) {
+                            clearInterval(progressIntervalRef.current);
+                            progressIntervalRef.current = null;
+                        }
+                        
+                        redirectTimeoutRef.current = setTimeout(() => {
                             onComplete(base64Data);
                         }, REDIRECT_DELAY_MS);
                         return 100;
@@ -38,7 +73,7 @@ const Upload = ({ onComplete }: UploadProps) => {
             }, PROGRESS_INTERVAL_MS);
         };
         reader.readAsDataURL(file);
-    }, [isSignedIn]);
+    }, [isSignedIn, onComplete]);
 
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
@@ -57,7 +92,7 @@ const Upload = ({ onComplete }: UploadProps) => {
         if (!isSignedIn) return;
 
         const droppedFile = e.dataTransfer.files[0];
-        if (droppedFile && droppedFile.type.startsWith('image/')) {
+        if (droppedFile) {
             processFile(droppedFile);
         }
     };
@@ -97,6 +132,7 @@ const Upload = ({ onComplete }: UploadProps) => {
                                 "Click to upload or just drag and drop"
                             ) : ("Sign in or sign up with Puter to upload")}
                         </p>
+                        {error && <p className="error-message" style={{ color: 'red', fontSize: '12px', marginTop: '4px' }}>{error}</p>}
                         <p className="help"> Maximum file size 50 MB</p>
                     </div>
                 </div>
