@@ -61,7 +61,7 @@ export default function App() {
 
       setAuthState({
         isSignedIn: !!user,
-        userName: user?. username || null,
+        userName: user?.username || null,
         userId: user?.uuid || null,
 
       })
@@ -74,8 +74,8 @@ export default function App() {
   }
 
   useEffect(() => {
-           refreshAuth();
-      }, []);
+    refreshAuth();
+  }, []);
 
   const signIn = async () => {
     await puterSignIn();
@@ -83,7 +83,7 @@ export default function App() {
   }
 
   const signOut = async () => {
-     puterSignOut();
+    await puterSignOut();
     return await refreshAuth();
   }
 
