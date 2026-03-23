@@ -1,87 +1,89 @@
-# Welcome to React Router!
+# 🏗️ AI-Powered Architectural Visualization App
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+An AI-powered full-stack application that converts **2D floor plans into photorealistic 3D visualizations** using modern AI models and web technologies.
 
 ---
 
-Built with ❤️ using React Router.
+## 🚀 Features
+
+* 🧠 Convert 2D floor plans into realistic 3D images
+* 🤖 AI-powered image generation using Gemini AI
+* ⚡ Fast and scalable serverless architecture
+* 🎨 Responsive and modern UI built with React
+* 🔄 End-to-end workflow: input → processing → AI output → rendering
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React.js
+* TypeScript
+
+### AI & Integration
+
+* Gemini AI (Generative AI)
+* AI APIs
+
+### Backend / Infra
+
+* Puter.js (Serverless execution & storage)
+
+---
+
+## 📂 Project Structure
+
+```bash
+├── src/
+├── components/
+├── pages/
+├── public/
+└── package.json
+```
+
+---
+
+## ⚙️ Installation & Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/archvision-ai.git
+
+# Navigate to project folder
+cd archvision-ai
+
+# Install dependencies
+npm install
+
+# Run the project
+npm run dev
+```
+
+---
+
+## 🧠 How It Works
+
+1. User uploads or provides a **2D floor plan**
+2. Application processes the input
+3. AI model (Gemini) generates **3D visualization**
+4. Output is rendered and displayed to the user
+
+---
+
+## 📈 Future Improvements
+
+* Add real-time editing of generated designs
+* Improve rendering quality with advanced models
+* Add user authentication and project saving
+* Enable multi-room and complex layout support
+
+---
+
+## 👨‍💻 Author
+
+**Prashant Kumar**
+🔗 GitHub: https://github.com/Prashant2610-G
+🔗 LinkedIn: https://linkedin.com/in/prashant-kumar-bb5335234
+
+---
